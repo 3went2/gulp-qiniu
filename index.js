@@ -72,6 +72,8 @@ module.exports = function (qiniu, option) {
       .then(function (rets) {
         log('Total:', colors.green(uploadedFiles + '/' + rets.length));
 
+        option.complete && option.complete();
+
         // Check if versioning
         if (!option.versioning) return;
         log('Version:', colors.green(version));
@@ -80,6 +82,7 @@ module.exports = function (qiniu, option) {
           fs.writeFileSync(option.versionFile, JSON.stringify({version: version}))
           log('Write version file:', colors.green(option.versionFile));
         }
+
       }, function (err) {
         log('Failed upload files:', err.message);
       });
